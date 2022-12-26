@@ -1,0 +1,85 @@
+.letter-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.letter-modal button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
+}
+.letter-modal section {
+  width: 90%;
+  max-width: 450px;
+  height: 600px;
+  margin: 0 auto;
+  border: 0.1px solid #707070;
+  border-radius: 1rem;
+  background-color: #fff;
+  animation: modal-show 0.3s;
+  overflow: hidden;
+}
+
+.letter-modal-header {
+  margin: 7px 0px;
+}
+
+.letter-modal-close {
+  color: #707070;
+  margin-left: 400px;
+  background-color: transparent;
+  font-size: 25px;
+  font-family: 'KNPSKkomi-Regular00';
+}
+
+.letter-modal-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-unkki {
+  padding-bottom: 20px;
+  border-bottom: 0.1px solid #707070;
+}
+
+.message-unkki-img {
+  width: 290px;
+  height: 208px;
+}
+
+.message-text {
+  color: #707070;
+  padding: 17px 20px;
+  font-size: 17px;
+  line-height: 150%;
+}
+
+.letter-modal.letter-modal-openModal {
+  display: flex;
+  align-items: center;
+  animation: modal-bg-show 0.3s;
+}
+
+@keyframes modal-show {
+  from {
+    opacity: 0;
+    margin-top: -50px;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+@keyframes modal-bg-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

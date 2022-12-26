@@ -1,0 +1,35 @@
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
+import CreateAccount from "./create/createAccount";
+import Read from "./read/read";
+
+const Home = () => {
+  return (
+    <>
+        <div className="main">
+          <div>
+            <img className="main-title" src="./img/title.png" alt="타이틀"/>
+            <img className="main-unkki" src="./img/unkki-main.png" alt="메인운끼"/>
+            <div className="main-exp"><span>"운끼"는 당신에게 온 메시지를 전달해 주는 배달부예요.</span></div>
+          </div>
+          <div className="buttons">
+            <div className="button-show">
+              <Link to="/read" className="button-show-text">보러가기</Link>
+            </div>
+            <div className="button-create">
+              <Link to="/createAccount" className="button-create-text">만들기</Link>
+            </div>
+          </div>
+        </div>
+        <div>
+            <Routes>
+              <Route path="/read" element={<Read/>}></Route>
+              <Route path="/createAccount" element={<CreateAccount/>}></Route>
+            </Routes>
+        </div>
+    </>
+  );
+}
+
+export default Home;
