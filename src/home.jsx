@@ -1,8 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
-import CreateAccount from "./create/createAccount";
-import Read from "./read/read";
 
 const Home = () => {
   return (
@@ -21,12 +18,6 @@ const Home = () => {
               <Link to="/createAccount" className="button-create-text">만들기</Link>
             </div>
           </div>
-        </div>
-        <div>
-            <Routes>
-              <Route path="/read" element={<Read/>}></Route>
-              <Route path="/createAccount" element={<CreateAccount/>}></Route>
-            </Routes>
         </div>
     </>
   );

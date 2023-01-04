@@ -1,48 +1,44 @@
 import React, { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import CreateRollingpaper from "./createRollinpaper";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const CreateAccount = () => {
-  const [id, setId] = useState('');
-  const [pwd, setPwd] = useState('');
+
+  const [accountId, setAccountId] = useState('');
+  const [accountPwd, setAccountPwd] = useState('');
   const [duplication, setDuplication] = useState(''); // 'duplication', 'notDuplication'
 
   const onChangeId = (e) => {
-    setId(e.target.value);
+    setAccountId(e.target.value);
   };
 
   const onChangePwd = (e) => {
-    setPwd(e.target.value);
+    setAccountPwd(e.target.value);
   };
 
   const onConfirmButtonClick = (e) => {
-    console.log(id);
-    if(id.trim() === ''){
+    if(accountId.trim() === ''){
       alert('닉네임을 입력해 주세요!');
       return;
     }
-    axios({
-      url: 'http://localhost:8080/confirmAccountId',
-      method: 'get',
-      params: {
-        account_id: id
-      }
-    })
-    .then((result) => {
-      console.log(result.data);
-      if (result.data.result === 'Y') {
-        setDuplication('notDuplication');
-      } else {
-        setDuplication('duplication');
-      }
-      
-    })
-    .catch(() => {
-      console.log("실패")
-    })
+    
+    axios
+      .get('http://52.78.60.246:3000/confirmAccountId',
+      {
+        params: {
+          account_id: accountId
+        }
+      })
+      .then((result) => {
+        if (result.data.result === 'Y') {
+          setDuplication('notDuplication');
+        } else {
+          setDuplication('duplication');
+        }
+      })
+      .catch(() => {
+      })
   }
-
 
   return (
     <>
@@ -60,7 +56,7 @@ const CreateAccount = () => {
           <div className="account-id-area">
             <div className="account-value">닉네임</div>
             <label>
-              <input className="account-input" type="text" value={id} onChange={onChangeId} placeholder="닉네임을 입력해 주세요."/>
+              <input className="account-input" type="text" value={accountId} onChange={onChangeId} placeholder="닉네임을 입력해 주세요."/>
               <button className="check-id-button" onClick={onConfirmButtonClick}>중복확인</button>
             </label>
             {
@@ -73,21 +69,16 @@ const CreateAccount = () => {
           </div>
           <div className="account-pwd-area">
             <div className="account-value">비밀번호</div>
-            <input className="account-input" type="password" value={pwd} onChange={onChangePwd} placeholder="비밀번호를 입력해 주세요." />
+            <input className="account-input" type="password" value={accountPwd} onChange={onChangePwd} placeholder="비밀번호를 입력해 주세요." />
           </div>
         </div>
         <div className="next-area">
             {
-              duplication==="notDuplication" && pwd !==""
-              ? <Link to="/createRollingpaper" className="button-create-rollingpaper">다음</Link>
+              duplication==="notDuplication" && accountPwd !==""
+              ? <Link to="/createRollingpaper" state={{ accountId, accountPwd }} className="button-create-rollingpaper">다음</Link>
               : <Link to="/createAccount" className="button-create-rollingpaper">다음</Link>
             }
         </div>
-      </div>
-      <div>
-        <Routes>
-          <Route path="/createRollingpaper" element={<CreateRollingpaper/>}></Route>
-        </Routes>
       </div>
     </>
   );

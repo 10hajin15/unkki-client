@@ -16,4 +16,6 @@
   font-size: 25px;
   color: white;
   text-decoration-line: none;
+  border: none;
+  cursor: pointer;
 }

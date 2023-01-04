@@ -102,8 +102,10 @@
 }
 
 .button-create-rollingpaper {
+  border: none;
   font-family: 'KNPSKkomi-Regular00';
   font-size: 25px;
   color: white;
   text-decoration-line: none;
+  cursor: pointer;
 }

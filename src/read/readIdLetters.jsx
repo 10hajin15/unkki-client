@@ -1,8 +1,20 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router";
 import Modal from "./modalLetter";
 
 const ReadLetters = () => {
+  const location = useLocation();
+
+  const id = location.state.id;
+  const subTitle = location.state.subTitle;
+  const title = location.state.title;
+  const exp = location.state.exp;
+  const letters = location.state.letters;
+
+  console.log(letters);
+
   const [modalOpen, setModalOpen] = useState(false);
+  const [showLetters, setShowLetters] = useState({});
 
   const openModal = () => {
     setModalOpen(true);
@@ -11,6 +23,25 @@ const ReadLetters = () => {
   const closeModal = () => {
     setModalOpen(false);
   }
+
+  const onShowLetterButton = (value) => {
+    for (let i = 0; i < letters.length; i++) {
+      if(letters[i]._id === value) {
+        setShowLetters(letters[i])
+      }
+    }
+  }
+
+  const onCopyLinkClick = () => {
+    let copyLink = `http://52.78.60.246:3000/sendMessage?${id}`;
+
+    navigator.clipboard.writeText(copyLink)
+      .then(() => {
+        console.log("Success Copied!");
+        alert("링크가 복사되었습니다.");
+      })
+      .catch(() => console.log("Fail Copied!"))    
+  };
 
   return (
     <>
@@ -23,35 +54,33 @@ const ReadLetters = () => {
                 <img className="home-icon-image" src="../img/icon-home.png" alt="HOME"></img>
               </div>
             </a>
-            <div className="link-icon">
+            <div className="link-icon" onClick={onCopyLinkClick}>
               <img className="link-icon-image" src="../img/icon-link.png" alt="링크복사"></img>
             </div>
           </div>
           <div className="rollingpaper-header">
-            <div className="rollingpaper-header-text">2023년 새해를 맞아</div>
-            <div className="rollingpaper-header-text"><span className="header-text-title">하진이</span><span>에게</span></div>
-            <div className="rollingpaper-header-text header-text-exp">칸을 아끼지 마세요❣</div>
+            <div className="rollingpaper-header-text">{subTitle}</div>
+            <div className="rollingpaper-header-text"><span className="header-text-title">{title}</span><span>에게</span></div>
+            <div className="rollingpaper-header-text header-text-exp">{exp}</div>
           </div>
           <div className="letters-area">
             <div className="letters-area-row letters-sub">편지를 눌러보세요!</div>
-            <div className="letters-area-row letters-row">
-              <div className="letters">
-                <img className="letter-img" onClick={openModal} src="../img/icon-letter.png" alt="편지"/>
-                <span className="letter-nickname">닉네임1</span>
-              </div>
-              <div className="letters">
-                <img className="letter-img" onClick={openModal} src="../img/icon-letter.png" alt="편지"/>
-                <span className="letter-nickname">닉네임1</span>
-              </div>
-              <div className="letters">
-                <img className="letter-img" onClick={openModal} src="../img/icon-letter.png" alt="편지"/>
-                <span className="letter-nickname">닉네임1</span>
+            <div className="letters-layout">
+              <div className="letters-area-row letters-row">
+                {
+                  letters.map((value) => (
+                  <div className="letters" key={value._id}>
+                    <img className="letter-img" onClick={() => {openModal(); onShowLetterButton(value._id);}} src="../img/icon-letter.png" alt="편지"/>
+                    <span className="letter-nickname">{value.writer}</span>
+                  </div>
+                ))
+                } 
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Modal open={modalOpen} close={closeModal}></Modal>
+      <Modal open={modalOpen} close={closeModal} showLetters={showLetters}></Modal>
     </>
   );
 }

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import CreateUnkki from "./createUnkki";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreateRollingpaper = () => {
+  const location = useLocation();
+  const accountId = location.state.accountId;
+  const accountPwd = location.state.accountPwd;
+
+  let navigate = useNavigate();
+
   const [subTitle, setSubTitle] = useState('');
   const [title, setTitle] = useState('');
   const [exp, setExp] = useState('');
@@ -18,6 +24,31 @@ const CreateRollingpaper = () => {
   const onChangeExp = (e) => {
     setExp(e.target.value);
   };
+
+  const onSaveButtonClick = () => {
+    if(title.trim() === ''){
+      alert('롤링페이퍼의 이름을 입력해 주세요!');
+      return;
+    }
+
+    axios
+    .post("http://52.78.60.246:3000/createAccountNRollingpaper", {
+      account_id: `${accountId}`,
+      account_pwd: `${accountPwd}`,
+      rollingpaper_title: `${title}`,
+      rollingpaper_subtitle: `${subTitle}`,
+      exp: `${exp}`,
+      letters: []
+    })
+    .then(function (response) {
+      console.log("ok");
+      navigate("/createUnkki",{state:{account_id: accountId, account_pwd:accountPwd, title:title,subTitle:subTitle,exp:exp}});
+    })
+    .catch(function (error) {
+      alert("롤링페이퍼를 만들 수 없습니다! 닉네임이 중복되었는지 확인해 주세요.");
+    })
+
+  }
 
   return (
     <>
@@ -45,14 +76,9 @@ const CreateRollingpaper = () => {
             <textarea className="exp-input" value={exp} onChange={onChangeExp} placeholder='"칸을 아끼지 마세요❣"등등 자유롭게 규칙을 정해보세요!'></textarea>
           </div>
         </div>
-        <div className="next-area">
-            <Link to="/createUnkki" className="button-create-rollingpaper">저장</Link>
+        <div>
+          <button className="next-area button-create-rollingpaper" onClick={onSaveButtonClick}>저장</button>
         </div>
-      </div>
-      <div>
-        <Routes>
-          <Route path="/createUnkki" element={<CreateUnkki/>}></Route>
-        </Routes>
       </div>
     </>
   );

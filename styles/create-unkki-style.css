@@ -46,12 +46,12 @@
   margin-left: 15px;
 }
 
-.rollingpaper-img-post-sub {
+.rollingpaper-img-sub {
   position: absolute;
-  padding-left: 300px;
-  padding-top: 120px;
+  padding-left: 260px;
+  margin-top: -130px;
   color: #BF463B;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 .rollingpaper-img-post {

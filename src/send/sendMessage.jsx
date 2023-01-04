@@ -1,10 +1,32 @@
 import React, { useState } from "react";
 import ModalMessage from "./modalMessage";
+import axios from "axios";
 
 const SendMessage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [subTitle, setSubTitle] = useState('');
+  const [exp, setExp] = useState('');
 
-  const letterIndex = 0;
+  let dbId = window.location.search;
+  dbId = dbId.replace('?','');
+  
+  axios
+    .get('http://52.78.60.246:3000/sendMessage',
+    {
+      params: {
+        dbId: dbId
+      }
+    })
+    .then((result) => {
+      setTitle(result.data.rollingpaper_title)
+      setSubTitle(result.data.rollingpaper_subtitle)
+      setExp(result.data.exp);
+    })
+    .catch(() => {
+      console.log("실패")
+    })
+  
+  const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
     setModalOpen(true);
@@ -25,14 +47,16 @@ const SendMessage = () => {
                 <img className="home-icon-image" src="../img/icon-home.png" alt="HOME"></img>
               </div>
             </a>
-            <div className="link-icon">
-              <img className="link-icon-image" src="../img/icon-letter.png" alt="링크복사"></img>
-            </div>
+            <a href="/createAccount">
+              <div className="link-icon">
+                <img className="link-icon-image" src="../img/icon-letter.png" alt="링크복사"></img>
+              </div>
+            </a>
           </div>
           <div className="rollingpaper-header">
-            <div className="rollingpaper-header-text">2023년 새해를 맞아</div>
-            <div className="rollingpaper-header-text"><span className="header-text-title">하진이</span><span>에게</span></div>
-            <div className="rollingpaper-header-text header-text-exp">칸을 아끼지 마세요❣</div>
+            <div className="rollingpaper-header-text">{subTitle}</div>
+            <div className="rollingpaper-header-text"><span className="header-text-title">{title}</span><span>에게</span></div>
+            <div className="rollingpaper-header-text header-text-exp">{exp}</div>
           </div>
           <div className="rollingpaper-contents">
             <div className="rollingpaper-img-area rollingpaper-img-light"><img className="rollingpaper-img" src="../img/streetlight-off.png" /></div>
@@ -45,7 +69,7 @@ const SendMessage = () => {
           </div>
         </div>
       </div>
-      <ModalMessage open={modalOpen} close={closeModal}></ModalMessage>
+      <ModalMessage open={modalOpen} close={closeModal} dbId={dbId}></ModalMessage>
 
     </>
   )

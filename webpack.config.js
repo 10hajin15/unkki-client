@@ -1,5 +1,4 @@
 const path = require('path')
-const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   name: 'response-check',
@@ -28,7 +27,6 @@ module.exports = {
           '@babel/preset-react'
         ],
         plugins: [
-          'react-refresh/babel',
           '@babel/plugin-proposal-class-properties'
         ]
       }
@@ -44,10 +42,6 @@ module.exports = {
         ]
     },]
   },
-
-  plugins: [
-    new RefreshWebpackPlugin()
-  ],
 
   output: {
     path: path.join(__dirname, 'dist'),
