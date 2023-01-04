@@ -22,7 +22,7 @@ const Read = () => {
     }
 
   axios
-    .get("http://52.78.60.246:3000/readRollingpaper",
+    .get("http://localhost:8080/readRollingpaper",
     {
       params: {
         account_id: accountId,

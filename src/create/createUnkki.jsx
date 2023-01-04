@@ -14,7 +14,7 @@ const CreateUnkki = () => {
   const [id, setId] = useState('');
 
   axios
-    .get("http://52.78.60.246:3000/readRollingpaper",
+    .get("http://localhost:8080/readRollingpaper",
     {
       params: {
         account_id: accountId,
@@ -30,7 +30,7 @@ const CreateUnkki = () => {
     })
 
   const onCopyLinkClick = () => {
-    let copyLink = `http://52.78.60.246:3000/sendMessage?${id}`;
+    let copyLink = `http://localhost:8080/sendMessage?${id}`;
 
     navigator.clipboard.writeText(copyLink)
       .then(() => {
