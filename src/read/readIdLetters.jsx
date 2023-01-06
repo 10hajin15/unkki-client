@@ -33,7 +33,7 @@ const ReadLetters = () => {
   }
 
   const onCopyLinkClick = () => {
-    let copyLink = `http://localhost:8080/sendMessage?${id}`;
+    let copyLink = `http://www.unkki.com/sendMessage?${id}`;
 
     navigator.clipboard.writeText(copyLink)
       .then(() => {
