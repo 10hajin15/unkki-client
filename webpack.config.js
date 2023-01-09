@@ -1,19 +1,39 @@
-const path = require('path')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+
+const mode = process.env.NODE_ENV || "development";
 
 module.exports = {
-  name: 'response-check',
-  mode: 'development',
-  devtool: 'eval',
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
+  mode,
 
   entry: {
     app: ['./client']
   },
 
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: 'app.js',
+    publicPath: '/dist/'
+  },
+
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
+
+  devServer: {
+    historyApiFallback: true,
+    devMiddleware: { publicPath: '/dist' },
+    static: { directory: path.resolve(__dirname) },
+    hot: true 
+  },
+  devtool: 'eval',
+
   module: {
-    rules: [{
+    rules: [ 
+      {
       test: /\.jsx?/,
       loader: 'babel-loader',
       options: {
@@ -40,19 +60,31 @@ module.exports = {
                 loader: 'css-loader'
             }
         ]
-    },]
+    }
+    ]
   },
-
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
-    publicPath: '/dist/'
+  plugins: [
+    new HtmlWebpackPlugin({
+      minify: process.env.NODE_ENV === 'production' ? {
+        collapseWhitespace: true,
+        removeComments: true,
+      } : false,
+    }),
+    new CleanWebpackPlugin()
+  ],
+  optimization: {
+    minimizer:
+      mode === "production"
+        ? [
+            new OptimizeCSSAssetsPlugin(),
+            new TerserPlugin({
+              terserOptions: {
+                compress: {
+                  drop_console: true
+                }
+              }
+            })
+          ]
+        : []
   },
-
-  devServer: {
-    historyApiFallback: true,
-    devMiddleware: { publicPath: '/dist' },
-    static: { directory: path.resolve(__dirname) },
-    hot: true 
-  }
 }
